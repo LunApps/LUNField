@@ -163,6 +163,11 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable CGFloat borderWidth;
 
 /**
+ *  @brief border corner radius of each text field in LUNField
+ */
+@property (assign, nonatomic) IBInspectable CGFloat borderCornerRadius;
+
+/**
  *  @brief border color of each text field in LUNField
  */
 @property (strong, nonatomic) IBInspectable UIColor *borderColor;
