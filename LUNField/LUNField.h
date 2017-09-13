@@ -252,6 +252,10 @@ IB_DESIGNABLE
  */
 @property (assign, nonatomic) UIViewContentMode placeholderImageViewContentMode;
 
+/**
+ *  @brief left/right padding for text
+ */
+@property (nonatomic, assign) IBInspectable CGFloat padding;
 
 /**
  *  @brief returns LUNField in bordered form with templated format

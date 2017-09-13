@@ -57,22 +57,24 @@ static const CGFloat kLUNDefaultMarginBetweenTextFields = 4.0f;
 
 @interface LUNTextFieldWithTextInsets : UITextField
 
+@property (nonatomic, assign) CGFloat padding;
+
 @end
 
 @implementation LUNTextFieldWithTextInsets
 
 - (CGRect)textRectForBounds:(CGRect)bounds {
     if (self.leftView) {
-        return CGRectInset(bounds, self.leftView.frame.size.width + kLUNDefaultMarginBetweenTextFields, 0);
+        return CGRectInset(bounds, self.leftView.frame.size.width + _padding, 0);
     }
-    return CGRectInset(bounds, kLUNDefaultMarginBetweenTextFields, 0);
+    return CGRectInset(bounds, _padding, 0);
 }
 
 - (CGRect)editingRectForBounds:(CGRect)bounds {
     if (self.leftView) {
-        return CGRectInset(bounds, self.leftView.frame.size.width + kLUNDefaultMarginBetweenTextFields, 0);
+        return CGRectInset(bounds, self.leftView.frame.size.width + _padding, 0);
     }
-    return CGRectInset(bounds, kLUNDefaultMarginBetweenTextFields, 0);
+    return CGRectInset(bounds, _padding, 0);
 }
 
 @end
@@ -176,6 +178,7 @@ static const CGFloat kLUNInitialVelocity = 0.0f;
     self.isEditing = NO;
     self.isMultifield = NO;
     _isCorrect = LUNUndefined;
+    _padding = kLUNDefaultMarginBetweenTextFields;
     self.textFields = [[NSMutableArray alloc] init];
     self.borderColor = [UIColor LUNDefaultBorderColor];
     self.upperBorderColor = [UIColor LUNDefaultUpperBorderColor];
@@ -523,7 +526,6 @@ static const CGFloat kLUNInitialVelocity = 0.0f;
     self.placeholderLabelTopConstraint.constant = -1 * (self.frame.size.height / 2 - self.placeholderLabel.frame.size.height / 2);
     [self addConstraint:self.placeholderLabelTopConstraint];
     [self layoutIfNeeded];
-    self.placeholderLabel.textAlignment = NSTextAlignmentCenter;
     [self setupPlaceholderPositionWithAlignment:self.placeholderAlignment];
 }
 
@@ -560,6 +562,7 @@ static const CGFloat kLUNInitialVelocity = 0.0f;
     textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     textField.delegate = self;
     textField.textAlignment = self.isMultifield ? NSTextAlignmentCenter : self.placeholderLabel.textAlignment;
+    ((LUNTextFieldWithTextInsets*)textField).padding = _padding;
     if (self.accessoryViewMode == LUNAccessoryViewModeAlways) {
         textField.inputAccessoryView = self.accessoryView;
     }
