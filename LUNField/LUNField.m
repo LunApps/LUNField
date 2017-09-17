@@ -134,7 +134,9 @@ static const CGFloat kLUNInitialVelocity = 0.0f;
 #pragma mark Life cycle
 
 - (void)layoutSubviews {
+
     [super layoutSubviews];
+
     BOOL isEdited = NO;
     for (UITextField *textField in self.textFields) {
         if (textField.text.length > 0) {
@@ -142,6 +144,7 @@ static const CGFloat kLUNInitialVelocity = 0.0f;
             break;
         }
     }
+    
     if (self.isEditing || isEdited) {
         self.placeholderLabelTopConstraint.constant = self.placeholderLabel.frame.size.height + 4;
         self.placeholderImageViewTopConstraint.constant = self.placeholderImageView.frame.size.height;
@@ -151,6 +154,7 @@ static const CGFloat kLUNInitialVelocity = 0.0f;
         self.placeholderLabelTopConstraint.constant = -1 * (self.frame.size.height / 2 - self.placeholderLabel.frame.size.height / 2);
         self.stateImageViewTopConstraint.constant = -1 * (self.frame.size.height / 2 - self.stateImageView.frame.size.height / 2);
     }
+    
     switch (self.placeholderAlignment) {
         case LUNPlaceholderAlignmentCenter: {
             self.placeholderLabel.textAlignment = NSTextAlignmentCenter;
@@ -169,12 +173,23 @@ static const CGFloat kLUNInitialVelocity = 0.0f;
         }
             break;
     }
-    [self layoutIfNeeded];
+    
+}
+
+#pragma properties
+
+- (void)setDisabled:(Boolean)disabled
+{
+    @synchronized (self) {
+        _disabled = disabled;
+        [self reload];
+    }
 }
 
 #pragma mark defaults
 
 - (void)commonSetup {
+    self.disabled = NO;
     self.isEditing = NO;
     self.isMultifield = NO;
     _isCorrect = LUNUndefined;
@@ -562,6 +577,7 @@ static const CGFloat kLUNInitialVelocity = 0.0f;
     textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     textField.delegate = self;
     textField.textAlignment = self.isMultifield ? NSTextAlignmentCenter : self.placeholderLabel.textAlignment;
+    textField.enabled = !self.disabled;
     ((LUNTextFieldWithTextInsets*)textField).padding = _padding;
     if (self.accessoryViewMode == LUNAccessoryViewModeAlways) {
         textField.inputAccessoryView = self.accessoryView;

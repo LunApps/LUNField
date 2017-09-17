@@ -257,6 +257,12 @@ IB_DESIGNABLE
  */
 @property (nonatomic, assign) IBInspectable CGFloat padding;
 
+
+/**
+ *  @brief disable TextFields
+ */
+@property (nonatomic, assign) IBInspectable Boolean disabled;
+
 /**
  *  @brief returns LUNField in bordered form with templated format
  *
