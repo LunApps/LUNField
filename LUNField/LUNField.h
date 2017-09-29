@@ -163,6 +163,11 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable CGFloat borderWidth;
 
 /**
+ *  @brief border corner radius of each text field in LUNField
+ */
+@property (assign, nonatomic) IBInspectable CGFloat borderCornerRadius;
+
+/**
  *  @brief border color of each text field in LUNField
  */
 @property (strong, nonatomic) IBInspectable UIColor *borderColor;
@@ -247,6 +252,16 @@ IB_DESIGNABLE
  */
 @property (assign, nonatomic) UIViewContentMode placeholderImageViewContentMode;
 
+/**
+ *  @brief left/right padding for text
+ */
+@property (nonatomic, assign) IBInspectable CGFloat padding;
+
+
+/**
+ *  @brief disable TextFields
+ */
+@property (nonatomic, assign) IBInspectable Boolean disabled;
 
 /**
  *  @brief returns LUNField in bordered form with templated format
