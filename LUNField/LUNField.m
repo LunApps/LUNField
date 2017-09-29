@@ -108,7 +108,7 @@ static const CGFloat kLUNScaleFactor = 0.75f;
 static const CGFloat kLUNDamping = 0.5f;
 static const CGFloat kLUNInitialVelocity = 0.0f;
 
-#pragma mark init 
+#pragma mark init
 
 - (instancetype)init {
     if (self = [super init]) {
@@ -134,9 +134,9 @@ static const CGFloat kLUNInitialVelocity = 0.0f;
 #pragma mark Life cycle
 
 - (void)layoutSubviews {
-
+    
     [super layoutSubviews];
-
+    
     BOOL isEdited = NO;
     for (UITextField *textField in self.textFields) {
         if (textField.text.length > 0) {
@@ -460,14 +460,16 @@ static const CGFloat kLUNInitialVelocity = 0.0f;
 #pragma mark DataSource
 
 - (void)setDataSource:(id <LUNFieldDataSource>)dataSource {
-    _dataSource = dataSource;
-    [self updatePlaceholderLabel];
-    [self updateTextFields];
-    [self updateUnderliningView];
-    [self updateLeftView];
-    [self updatePlaceholderImageView];
-    [self updateStateImageView];
-    [self layoutIfNeeded];
+    @synchronized (self) {
+        _dataSource = dataSource;
+        [self updatePlaceholderLabel];
+        [self updateTextFields];
+        [self updateUnderliningView];
+        [self updateLeftView];
+        [self updatePlaceholderImageView];
+        [self updateStateImageView];
+        [self layoutIfNeeded];
+    }
 }
 
 #pragma mark updating views in LUNField
@@ -596,18 +598,24 @@ static const CGFloat kLUNInitialVelocity = 0.0f;
 }
 
 - (void)setPlaceholderText:(NSString *)placeholderText {
-    _placeholderText = placeholderText;
-    self.placeholderLabel.text = placeholderText;
+    @synchronized (self) {
+        _placeholderText = placeholderText;
+        self.placeholderLabel.text = placeholderText;
+    }
 }
 
 - (void)setPlaceholderFont:(UIFont *)placeholderFont {
-    _placeholderFont = placeholderFont;
-    self.placeholderLabel.font = placeholderFont;
+    @synchronized (self) {
+        _placeholderFont = placeholderFont;
+        self.placeholderLabel.font = placeholderFont;
+    }
 }
 
 - (void)setPlaceholderFontColor:(UIColor *)placeholderFontColor {
-    _placeholderFontColor = placeholderFontColor;
-    self.placeholderLabel.textColor = placeholderFontColor;
+    @synchronized (self) {
+        _placeholderFontColor = placeholderFontColor;
+        self.placeholderLabel.textColor = placeholderFontColor;
+    }
 }
 
 #pragma mark placeholderImage setup
@@ -623,50 +631,62 @@ static const CGFloat kLUNInitialVelocity = 0.0f;
 }
 
 - (void)setPlaceholderImage:(UIImage *)placeholderImage {
+    @synchronized (self) {
     _placeholderImage = placeholderImage;
     if (!self.placeholderImageView) {
         self.placeholderImageView = [UIImageView new];
         self.placeholderImageView.clipsToBounds = YES;
     }
     self.placeholderImageView.image = placeholderImage;
+    }
 }
 
 #pragma mark text setup
 
 - (void)setTextFont:(UIFont *)textFont {
-    _textFont = textFont;
-    for (UITextField *currentTextField in self.textFields) {
-        currentTextField.font = textFont;
+    @synchronized (self) {
+        _textFont = textFont;
+        for (UITextField *currentTextField in self.textFields) {
+            currentTextField.font = textFont;
+        }
     }
 }
 
 - (void)setTextFontColor:(UIColor *)textFontColor {
-    _textFontColor = textFontColor;
-    for (UITextField *currentTextField in self.textFields) {
-        currentTextField.textColor = textFontColor;
+    @synchronized (self) {
+        _textFontColor = textFontColor;
+        for (UITextField *currentTextField in self.textFields) {
+            currentTextField.textColor = textFontColor;
+        }
     }
 }
 
 - (void)setTintColor:(UIColor *)tintColor {
-    _tintColor = tintColor;
-    for (UITextField *currentTextField in self.textFields) {
-        currentTextField.tintColor = tintColor;
+    @synchronized (self) {
+        _tintColor = tintColor;
+        for (UITextField *currentTextField in self.textFields) {
+            currentTextField.tintColor = tintColor;
+        }
     }
 }
 
 #pragma mark textFieldsBorderSetup
 
 - (void)setBorderColor:(UIColor *)borderColor {
-    _borderColor = borderColor;
-    for (UITextField *currentTextField in self.textFields) {
-        currentTextField.layer.borderColor = borderColor.CGColor;
+    @synchronized (self) {
+        _borderColor = borderColor;
+        for (UITextField *currentTextField in self.textFields) {
+            currentTextField.layer.borderColor = borderColor.CGColor;
+        }
     }
 }
 
 - (void)setBorderWidth:(CGFloat)borderWidth {
-    _borderWidth = borderWidth;
-    for (UITextField *currentTextField in self.textFields) {
-        currentTextField.layer.borderWidth = borderWidth;
+    @synchronized (self) {
+        _borderWidth = borderWidth;
+        for (UITextField *currentTextField in self.textFields) {
+            currentTextField.layer.borderWidth = borderWidth;
+        }
     }
 }
 
